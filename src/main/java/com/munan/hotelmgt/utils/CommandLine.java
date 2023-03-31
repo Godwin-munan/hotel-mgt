@@ -51,6 +51,8 @@ public class CommandLine implements CommandLineRunner {
                     newUser.setUsername(tempUser.getUsername());
                     newUser.setPassword(passwordEncoder.encode(tempUser.getPassword()));
                     newUser.setRoles(Collections.singleton(role));
+                    newUser.setFirstName("Godwin");
+                    newUser.setLastName("Munan");
 
                     userRepository.save(newUser);
 

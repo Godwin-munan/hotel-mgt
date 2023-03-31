@@ -1,5 +1,6 @@
 package com.munan.hotelmgt.service;
 
+import static com.munan.hotelmgt.constant.GenConstant.succesResponse;
 import com.munan.hotelmgt.dto.JobDto;
 import com.munan.hotelmgt.exception.AlreadyExistException;
 import com.munan.hotelmgt.exception.NotFoundException;
@@ -23,19 +24,8 @@ public class JobService {
 
     private final JobRepository jobRepository;
 
-    //PRIVATE METHOD TO FIND BY ID
-    private Job findById(Long id) throws NotFoundException {
-
-        Optional<Job> findJob = jobRepository.findById(id);
-
-        findJob.orElseThrow(()->new NotFoundException("Job with id "+id+", Does not exist"));
-
-        return findJob.get();
-
-    }
-
     //ADD NEW JOB
-    public ResponseEntity<HttpResponse<?>> addJob(JobDto job) throws AlreadyExistException {
+    public ResponseEntity<HttpResponse<?>> add(JobDto job) throws AlreadyExistException {
 
         Optional<Job> findJob = jobRepository.findByTitle(job.getTitle());
 
@@ -52,28 +42,38 @@ public class JobService {
 
         return ResponseEntity.ok(
                 new HttpResponse<>(
-                        HttpStatus.OK.value(), "Successful", jobRepository.save(newJob)
+                        HttpStatus.OK.value(),
+                        HttpStatus.OK,
+                        succesResponse,
+                        jobRepository.save(newJob)
                 )
         );
     }
 
-    public ResponseEntity<HttpResponse<?>> getAllJobs(Integer page, Integer size, String field) {
+    //GET ALL JOBS
+    public ResponseEntity<HttpResponse<?>> getAll(Integer page, Integer size, String field) {
         return ResponseEntity.ok(
                 new HttpResponse<>(HttpStatus.OK.value(),
-                        "Successful",
+                        HttpStatus.OK,
+                        succesResponse,
                         jobRepository.findAll(PageRequest.of(page,size, Sort.by(Sort.Direction.ASC, field))))
         );
     }
 
+    //GET JOB BY ID
     public ResponseEntity<HttpResponse<?>> getById(Long id) throws NotFoundException {
 
         Job findJob = findById(id);
 
         return ResponseEntity.ok(
-                new HttpResponse<>(HttpStatus.OK.value(), "Successful", findJob)
+                new HttpResponse<>(HttpStatus.OK.value(),
+                        HttpStatus.OK,
+                        succesResponse,
+                        findJob)
         );
     }
 
+    //DELETE JOB BY ID
     public ResponseEntity<HttpResponse<?>> deleteById(Long id) throws NotFoundException {
 
         Job findJob = findById(id);
@@ -83,7 +83,48 @@ public class JobService {
         jobRepository.delete(findJob);
 
         return ResponseEntity.ok(
-                new HttpResponse<>(HttpStatus.OK.value(), "successful", "Job with title "+title+", has been deleted")
+                new HttpResponse<>(
+                        HttpStatus.OK.value(),
+                        HttpStatus.OK,
+                        succesResponse,
+                        "Job with title " + title +" "+ " has been deleted")
         );
     }
+
+    //UPDATE JOB
+    public ResponseEntity<HttpResponse<?>> update(Job job){
+        
+        Job savedJob = new Job();
+        
+        if(job.getId() != null){
+            savedJob.setId(job.getId());
+        }
+        
+        savedJob.setDescription(job.getDescription());
+        savedJob.setSalary(job.getSalary());
+        savedJob.setTitle(job.getTitle());
+        
+        return ResponseEntity.ok(
+                new HttpResponse<>(
+                        HttpStatus.OK.value(),
+                        HttpStatus.OK,
+                        succesResponse,
+                        jobRepository.save(savedJob))
+        );
+    }
+    
+    
+    //FIND JOB BY TYPE
+    public Job findJobByTitle(String title) throws NotFoundException{
+        return jobRepository.findByTitle(title).orElseThrow(()-> new NotFoundException("Job with "+title+" not Found"));
+    }
+    
+    //PRIVATE METHOD TO FIND BY ID
+    public Job findById(Long id) throws NotFoundException {
+
+        return jobRepository.findById(id)
+                .orElseThrow(()->new NotFoundException("Job with id "+id+", Does not exist"));
+
+    }
+        
 }

@@ -18,6 +18,7 @@ public class HttpResponse<T> {
     private int status;
 
     private HttpStatus httpStatus;
+    
     @JsonProperty("data")
     private T data;
 
@@ -30,15 +31,16 @@ public class HttpResponse<T> {
         this.message = message;
     }
 
-    public HttpResponse(int status, String response, T data) {
+    public HttpResponse(int status, HttpStatus httpStatus, String response, T data) {
         this.status = status;
         this.response = response;
         this.data = data;
+        this.httpStatus = httpStatus;
     }
 
     public HttpResponse(int status, HttpStatus httpStatus, String response, String message) {
         this.status = status;
-        this.httpStatus=httpStatus;
+        this.httpStatus = httpStatus;
         this.message = message;
         this.response=response;
     }

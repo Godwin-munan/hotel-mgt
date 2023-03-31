@@ -1,5 +1,6 @@
 package com.munan.hotelmgt.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -24,7 +25,19 @@ public class RoomType implements Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
+    
+    @Column(name = "name")
     private String name;
+    
+    @Column(name = "price")
     private Double Price;
+    
+    @Column(name = "property")
+    private String property;
+    
+    @Column(name = "description")
     private String description;
+    
+    @Column(name = "image_url")
+    private String imageUrl;
 }

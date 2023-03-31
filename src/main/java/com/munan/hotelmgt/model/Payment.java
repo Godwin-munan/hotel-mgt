@@ -21,13 +21,17 @@ public class Payment implements Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
-
-
-    @ManyToOne
-    private Guest guest;
-    @ManyToOne
-    private Invoice invoice;
+    
+    @Column(name = "amount")
     private Double amount;
+    
     @Column(name = "payment_date")
     private LocalDate paymentDate;
+    
+    @ManyToOne
+    private Invoice invoice;
+    
+    @ManyToOne
+    private PaymentMethod paymentMethod;
+
 }

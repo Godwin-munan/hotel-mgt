@@ -22,13 +22,18 @@ public class Invoice implements Serializable {
     private Long id;
 
     @Column(name = "late_charges")
-    private Double lateCheckoutCharges;
-    @Column(name = "invoice_number")
-    private String invoiceNumber;
+    private Double lateCharges;
+    
+    @Column(name = "invoice_code")
+    private String invoiceCode;
+    
     @Column(name = "invoice_total")
     private Double invoiceTotal;
+    
     @Column(name = "payment_total")
     private Double paymentTotal;
 
-
+    @ManyToOne
+    private Guest guest;
+    
 }

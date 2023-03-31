@@ -21,22 +21,34 @@ public class Staff implements Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
-
+    
     @Column(name = "first_name")
     private String firstName;
+    
     @Column(name = "last_name")
     private String lastName;
+    
+    @Column(name = "email")
+    private String email;
+    
+    @Column(name = "card_no")
+    private String cardNo;
+    
     @Column(name = "join_date")
     private LocalDate joinDate;
+    
     @Column(name = "leave_date")
     private LocalDate leaveDate;
-
+    
     @ManyToOne
-    private IdCard idCard;
+    private IdCard card;
+    
     @ManyToOne
     private Gender gender;
+    
     @ManyToOne
     private Shift shift;
+    
     @ManyToOne
     private Job job;
 

@@ -8,10 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
 import java.util.Objects;
 
 import static org.springframework.http.HttpStatus.*;
+import org.springframework.security.authentication.BadCredentialsException;
 
 @ControllerAdvice
 public class GlobalExceptionHandling implements ErrorController {
@@ -27,24 +27,22 @@ public class GlobalExceptionHandling implements ErrorController {
     public ResponseEntity<HttpResponse<?>> notFoundException(NotFoundException exception) {
         return createHttpResponse(BAD_REQUEST, exception.getMessage());
     }
-
-   /*
-
-
-    @ExceptionHandler(UnderAgeException.class)
-    public ResponseEntity<HttpResponse> underAgeException(UnderAgeException exception) {
+    
+    @ExceptionHandler(InvalidEmailException.class)
+    public ResponseEntity<HttpResponse<?>> invalidEmailException(InvalidEmailException exception) {
+        return createHttpResponse(BAD_REQUEST, exception.getMessage());
+    }
+    
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<HttpResponse<?>> badCredentialsException(BadCredentialsException exception) {
         return createHttpResponse(BAD_REQUEST, exception.getMessage());
     }
 
-
-
-
-    @ExceptionHandler(NotAllowedException.class)
-    public ResponseEntity<HttpResponse> notAllowedException(NotAllowedException exception) {
-        return createHttpResponse(BAD_REQUEST, exception.getMessage());
-    }
-*/
-
+    /**
+     *
+     * @param exception
+     * @return
+     */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<HttpResponse<?>> methodNotSupportedException(HttpRequestMethodNotSupportedException exception) {
         HttpMethod supportedMethod = Objects.requireNonNull(exception.getSupportedHttpMethods()).iterator().next();
@@ -52,12 +50,15 @@ public class GlobalExceptionHandling implements ErrorController {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<HttpResponse<?>> internalServerErrorException(Exception exception) {
+    public ResponseEntity<HttpResponse<?>> internalServerErrorException() {
         return createHttpResponse(INTERNAL_SERVER_ERROR, INTERNAL_SERVER_ERROR_MSG);
     }
-
+    
+    
     private ResponseEntity<HttpResponse<?>> createHttpResponse(HttpStatus httpStatus, String message) {
-        return new ResponseEntity<>(new HttpResponse<>(httpStatus.value(), httpStatus, httpStatus.getReasonPhrase().toUpperCase(), message), httpStatus);
+        return new ResponseEntity<>(
+                new HttpResponse<>(httpStatus.value(), httpStatus,httpStatus.getReasonPhrase().toUpperCase(),  message),
+                httpStatus);
     }
 
 }

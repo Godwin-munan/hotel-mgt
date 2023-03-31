@@ -1,5 +1,6 @@
 package com.munan.hotelmgt.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -25,7 +26,8 @@ public class IdCard implements Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
+    
+    @Column(name = "type")
     private String type;
-    private String card_num;
-    private LocalDate expiration_date;
+      
 }

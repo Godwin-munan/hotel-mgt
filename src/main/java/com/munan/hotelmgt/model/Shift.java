@@ -1,5 +1,6 @@
 package com.munan.hotelmgt.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -22,5 +23,7 @@ public class Shift implements Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
+    
+    @Column(name = "type")
     private String type;
 }

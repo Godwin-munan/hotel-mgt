@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -32,7 +33,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpMethod.*;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
@@ -58,15 +58,16 @@ public class SecurityConfig {
 
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors().and()
+                .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(request ->request
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
                         .requestMatchers(POST,"/api/auth/login").permitAll()
                         .requestMatchers(POST,"/api/job/add/**").permitAll()
-                        .requestMatchers(GET,"/api/job/get/getAll/**").permitAll()
-                        .requestMatchers(GET, "/api/job/get/**").permitAll()
+                        .requestMatchers(GET,"/api/job/getAll/**","/api/gender/getAll").permitAll()
+                        .requestMatchers(GET, "/api/job/getById/**", "/api/test/name").permitAll()
                         .requestMatchers(DELETE, "/api/job/delete/**").permitAll()
-                        .anyRequest().authenticated())
+                        .requestMatchers(PUT, "/api/job/update/**").permitAll()
+                        .anyRequest().permitAll())
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .sessionManagement(session->session.sessionCreationPolicy(STATELESS))
                 .exceptionHandling(exception->
@@ -94,14 +95,10 @@ public class SecurityConfig {
     @Bean
     JwtEncoder jwtEncoder() {
 
-//        String keyId = "8d6c9933-8aa0-489d-b38f-7c2e41168d4a";
-        System.out.println(keyId);
-
         JWK jwk = new RSAKey.Builder(rsaKeys.publicKey())
                 .privateKey(rsaKeys.privateKey())
                 .keyID(keyId)
                 .build();
-
 
         JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
 
@@ -118,10 +115,9 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
         configuration.setMaxAge(1800L);
-        configuration.setAllowedMethods(List.of(GET.name(), POST.name(), PUT.name(), DELETE.name()));
-        configuration.setAllowedHeaders(List.of(AUTHORIZATION));
-
-
+        configuration.setAllowedMethods(List.of(GET.name(),POST.name(), PUT.name(), DELETE.name()));
+        configuration.setAllowedHeaders(List.of("*"));
+        
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 

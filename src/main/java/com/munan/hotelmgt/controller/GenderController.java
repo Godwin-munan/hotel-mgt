@@ -20,23 +20,33 @@ public class GenderController {
 
     private final GenderService genderService;
 
-    @Operation(summary = "Add Gender", description = "Add a new gender")
-    @PostMapping("/add/addGender")
-    public ResponseEntity<HttpResponse<?>> add(@RequestBody Gender gender) throws AlreadyExistException {
+    //ADD
+    @Operation(summary = "ADD GENDER", description = "Add a new gender")
+    @PostMapping("/add")
+    public ResponseEntity<HttpResponse<?>> addGender(@RequestBody Gender gender) throws AlreadyExistException {
 
         return genderService.addGender(gender);
     }
 
-    @Operation(summary = "Get all genders", description = "Get all existing genders with sorted field")
-    @GetMapping("/get/getAll")
-    public ResponseEntity<HttpResponse<?>> getAll() { return genderService.getAllGender();}
+    
+    //GET
+    @Operation(summary = "GET ALL", description = "Retrieve all existing genders")
+    @GetMapping("/get")
+    public ResponseEntity<HttpResponse<?>> getAllGender() { return genderService.getAllGender();}
 
+    @Operation(summary = "RETRIEVE BY ID", description = "Retrieve Gender by id")
+    @GetMapping("/get/{gender_id}")
+    public ResponseEntity<HttpResponse<?>> getByGenderId(@PathVariable(value = "gender_id") Long id) throws NotFoundException {
+        return genderService.getById(id);
+    }
 
-    @Operation(summary = "Delete existing gender", description = "Delete existing gender by id")
-    @DeleteMapping("/delete/deleteById/{id}")
-    public ResponseEntity<HttpResponse<?>> deleteById(@PathVariable("id") Long id) throws NotFoundException, AlreadyExistException { return genderService.deleteGenderById(id);}
+    //DELETE
+    @Operation(summary = "DELETE BY ID", description = "Delete existing gender by id")
+    @DeleteMapping("/delete/{gender_id}")
+    public ResponseEntity<HttpResponse<?>> deleteGenderById(@PathVariable("gender_id") Long id) throws NotFoundException, AlreadyExistException { return genderService.deleteGenderById(id);}
 
-    @Operation(summary = "Update Gender")
+    //UPDATE
+    @Operation(summary = "UPDATE GENDER", description = "Update existing gender by id")
     @PutMapping("/update")
     public ResponseEntity<HttpResponse<?>> updateGender(@RequestBody Gender gender) {
         return genderService.updateGender(gender);
