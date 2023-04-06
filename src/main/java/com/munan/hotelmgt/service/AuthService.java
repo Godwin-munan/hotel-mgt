@@ -63,7 +63,7 @@ public class AuthService {
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("hotelMgt")
                 .issuedAt(now)
-                .expiresAt(now.plus(1, HOURS))
+                .expiresAt(now.plus(10, HOURS))
                 .subject(authentication.getName())
                 .claim("scope", scope)
                 .claim("first", user.getFirstName())

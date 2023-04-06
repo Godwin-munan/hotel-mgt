@@ -13,11 +13,16 @@ import lombok.Setter;
 import java.io.Serializable;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
+import jakarta.persistence.Lob;
+import lombok.Builder;
+import lombok.Data;
 
 @Entity
 @Table(name = "room_type")
-@Getter
-@Setter
+//@Getter
+//@Setter
+@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class RoomType implements Serializable {
@@ -38,6 +43,7 @@ public class RoomType implements Serializable {
     @Column(name = "description")
     private String description;
     
-    @Column(name = "image_url")
-    private String imageUrl;
+    @Lob
+    @Column(name = "image")
+    private byte[] image;
 }

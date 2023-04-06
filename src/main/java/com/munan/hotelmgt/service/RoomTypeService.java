@@ -5,9 +5,14 @@ import com.munan.hotelmgt.exception.AlreadyExistException;
 import com.munan.hotelmgt.exception.NotFoundException;
 import com.munan.hotelmgt.model.RoomType;
 import com.munan.hotelmgt.repository.RoomTypeRepository;
+import com.munan.hotelmgt.utils.CompressionUtil;
 import com.munan.hotelmgt.utils.HttpResponse;
 import jakarta.transaction.Transactional;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
+import java.util.zip.DataFormatException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +26,7 @@ public class RoomTypeService {
     private final RoomTypeRepository roomTypeRepository;
 
     //ADD NEW ROOM TYPE
-    public ResponseEntity<HttpResponse<?>> add(RoomType type) throws AlreadyExistException {
+    public ResponseEntity<HttpResponse<?>> add(RoomType type) throws AlreadyExistException, IOException {
         Optional<RoomType> existingtype = roomTypeRepository.findByName(type.getName());
 
         if(existingtype.isPresent()){
@@ -33,7 +38,13 @@ public class RoomTypeService {
         newType.setDescription(type.getDescription());
         newType.setPrice(type.getPrice());
         newType.setProperty(type.getProperty());
-        newType.setImageUrl(type.getImageUrl());
+        
+        if(type.getImage() != null && type.getImage().length > 0){
+            newType.setImage(
+                CompressionUtil.compress(type.getImage())
+                );
+        }
+        
 
         return ResponseEntity.ok(
                 new HttpResponse<>(
@@ -45,13 +56,16 @@ public class RoomTypeService {
     }
 
     //GET ALL ROOM TYPES
-    public ResponseEntity<HttpResponse<?>> getAll() {
+    public ResponseEntity<HttpResponse<?>> getAll() throws IOException, DataFormatException {
+        List<RoomType> roomList = roomTypeRepository.findAll();
+        
+//        var rooms = decompressed(roomList);
         return ResponseEntity.ok(
                 new HttpResponse<>(
                         HttpStatus.OK.value(),
                         HttpStatus.OK,
                         succesResponse,
-                        roomTypeRepository.findAll())
+                        roomList)
         );
     }
 
@@ -85,7 +99,7 @@ public class RoomTypeService {
     }
 
     //UPDATE ROOM TYPE
-    public ResponseEntity<HttpResponse<?>> update(RoomType type) {
+    public ResponseEntity<HttpResponse<?>> update(RoomType type) throws IOException {
         
         RoomType savedType = new RoomType();
         
@@ -97,7 +111,9 @@ public class RoomTypeService {
         savedType.setDescription(type.getDescription());
         savedType.setPrice(type.getPrice());
         savedType.setProperty(type.getProperty());
-        savedType.setImageUrl(type.getImageUrl());
+        savedType.setImage(
+                CompressionUtil.compress(type.getImage())
+        );
         
         return ResponseEntity.ok(
                 new HttpResponse<>(
@@ -114,6 +130,28 @@ public class RoomTypeService {
                 .orElseThrow(()->new NotFoundException("Room Type with id "+id+" Does not exist"));
 
     }
+    
+    //DECOMPRESS IMAGE BYTE
+    private List<RoomType> decompressed(List<RoomType> rooms) throws IOException, DataFormatException{
+        
+        List<RoomType> newTypes = null;
+        
+        Iterator<RoomType> roomIt = rooms.iterator();
+        
+        while(roomIt.hasNext()){
+        var image = CompressionUtil.decompress(roomIt.next().getImage());
+//        RoomType roomt = roomIt.next().setImage(image);
+//          newTypes.add();
+        }
+        
+//        rooms.stream().map(rooms -> {
+//        
+//            List<RoomType> newTypes = 
+//        });
+//       
+        return rooms;
+    }
+    
     
     //FIND SHIFT BY TYPE
     public RoomType findRoomTypeByName(String name) throws NotFoundException{

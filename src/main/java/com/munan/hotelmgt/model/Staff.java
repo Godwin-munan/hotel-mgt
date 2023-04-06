@@ -34,11 +34,11 @@ public class Staff implements Serializable {
     @Column(name = "card_no")
     private String cardNo;
     
-    @Column(name = "join_date")
-    private LocalDate joinDate;
+    @Column(name = "employ_date")
+    private LocalDate employDate;
     
-    @Column(name = "leave_date")
-    private LocalDate leaveDate;
+    @Column(name = "terminate_date")
+    private LocalDate terminateDate;
     
     @ManyToOne
     private IdCard card;

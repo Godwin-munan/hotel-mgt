@@ -62,12 +62,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request ->request
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
                         .requestMatchers(POST,"/api/auth/login").permitAll()
-                        .requestMatchers(POST,"/api/job/add/**").permitAll()
-                        .requestMatchers(GET,"/api/job/getAll/**","/api/gender/getAll").permitAll()
-                        .requestMatchers(GET, "/api/job/getById/**", "/api/test/name").permitAll()
-                        .requestMatchers(DELETE, "/api/job/delete/**").permitAll()
-                        .requestMatchers(PUT, "/api/job/update/**").permitAll()
-                        .anyRequest().permitAll())
+//                        .requestMatchers(POST,"/api/job/add/**").permitAll()
+//                        .requestMatchers(GET,"/api/job/getAll/**","/api/gender/getAll").permitAll()
+//                        .requestMatchers(GET, "/api/job/getById/**", "/api/test/name").permitAll()
+//                        .requestMatchers(DELETE, "/api/job/delete/**").permitAll()
+//                        .requestMatchers(POST, "/api/user/add/**").permitAll()
+                        .anyRequest().authenticated())
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .sessionManagement(session->session.sessionCreationPolicy(STATELESS))
                 .exceptionHandling(exception->

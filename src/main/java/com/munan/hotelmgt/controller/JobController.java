@@ -28,12 +28,10 @@ public class JobController {
     }
 
     //GET
-    @Operation(summary = "RETRIEVE ALL", description = "Retrieve all Jobs by Pagination")
-    @GetMapping("/get/{field}/{page}/{size}")
-    public ResponseEntity<HttpResponse<?>> getAllJobs(@PathVariable("field") String field,
-                                                      @PathVariable("page") Integer page,
-                                                      @PathVariable("size") Integer size) {
-        return jobService.getAll(page, size, field);
+    @Operation(summary = "RETRIEVE ALL", description = "Retrieve all Jobs")
+    @GetMapping("/get")
+    public ResponseEntity<HttpResponse<?>> getAllJobs() {
+        return jobService.getAll();
     }
 
     @Operation(summary = "GET BY ID", description = "Retrieve job by id")

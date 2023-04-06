@@ -137,8 +137,8 @@ public class StaffService {
         
         newStaff.setFirstName(staff.getFirstName());
         newStaff.setLastName(staff.getLastName());
-        newStaff.setJoinDate(staff.getJoinDate());
-        newStaff.setLeaveDate(staff.getLeaveDate());
+        newStaff.setEmployDate(staff.getEmployDate());
+        newStaff.setTerminateDate(staff.getTerminateDate());
         newStaff.setCardNo(staff.getCardNo());
         
         if(!GenConstant.emailValidator(staff.getEmail())){
@@ -182,11 +182,11 @@ public class StaffService {
             newStaff.setJob(staff.getJob());
         }
         
-        if(staff.getLeaveDate() != null){
-            newStaff.setLeaveDate(staff.getLeaveDate());
+        if(staff.getTerminateDate() != null){
+            newStaff.setTerminateDate(staff.getTerminateDate());
         }
         
-        if(staff.getLeaveDate() != null){
+        if(staff.getCard() != null){
             newStaff.setCard(staff.getCard());
         }
         

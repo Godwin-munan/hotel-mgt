@@ -29,7 +29,7 @@ public class RoomTypeController {
     //ADD
     @Operation(summary = "ADD ROOM TYPE", description = "Add a new Room type")
     @PostMapping("/add")
-    public ResponseEntity<HttpResponse<?>> addRoomType(@RequestBody RoomType type) throws AlreadyExistException {
+    public ResponseEntity<HttpResponse<?>> addRoomType(@RequestBody RoomType type) throws AlreadyExistException, Exception {
         return roomTypeService.add(type);
     }
 
@@ -37,7 +37,7 @@ public class RoomTypeController {
     //GET
     @Operation(summary = "GET ALL", description = "Retrieve all existing Room Type")
     @GetMapping("/get")
-    public ResponseEntity<HttpResponse<?>> getAllRoomType() { return roomTypeService.getAll();}
+    public ResponseEntity<HttpResponse<?>> getAllRoomType() throws Exception { return roomTypeService.getAll();}
 
     @Operation(summary = "RETRIEVE BY ID", description = "Retrieve Room Type by id")
     @GetMapping("/get/{roomType_id}")
@@ -55,7 +55,7 @@ public class RoomTypeController {
     //UPDATE
     @Operation(summary = "UPDATE ROOM TYPE", description = "Update existing Room Type by id")
     @PutMapping("/update")
-    public ResponseEntity<HttpResponse<?>> updateRoomType(@RequestBody RoomType type) {
+    public ResponseEntity<HttpResponse<?>> updateRoomType(@RequestBody RoomType type) throws Exception{
         return roomTypeService.update(type);
     }
 }

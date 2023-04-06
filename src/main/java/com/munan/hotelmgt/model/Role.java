@@ -32,6 +32,7 @@ public class Role implements Serializable {
     private String name;
     
     @Column(name = "deleted")
+    @JsonIgnore
     private boolean deleted = Boolean.FALSE;
 
     @ManyToMany(fetch = FetchType.LAZY,

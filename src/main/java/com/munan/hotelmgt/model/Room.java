@@ -32,6 +32,7 @@ public class Room implements Serializable {
     private String code;
     
     @Column(name = "deleted")
+    @JsonIgnore
     private boolean deleted = Boolean.FALSE;
     
     @Column(name = "room_status")

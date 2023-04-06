@@ -51,12 +51,12 @@ public class JobService {
     }
 
     //GET ALL JOBS
-    public ResponseEntity<HttpResponse<?>> getAll(Integer page, Integer size, String field) {
+    public ResponseEntity<HttpResponse<?>> getAll() {
         return ResponseEntity.ok(
                 new HttpResponse<>(HttpStatus.OK.value(),
                         HttpStatus.OK,
                         succesResponse,
-                        jobRepository.findAll(PageRequest.of(page,size, Sort.by(Sort.Direction.ASC, field))))
+                        jobRepository.findAll())
         );
     }
 

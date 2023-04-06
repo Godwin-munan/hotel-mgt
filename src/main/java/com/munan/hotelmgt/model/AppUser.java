@@ -1,5 +1,6 @@
 package com.munan.hotelmgt.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -41,9 +42,11 @@ public class AppUser implements Serializable {
     private String username;
     
     @Column(name = "password")
+    @JsonIgnore
     private String password;
     
     @Column(name = "deleted")
+    @JsonIgnore
     private boolean deleted = Boolean.FALSE;
 
     @ManyToMany(fetch = EAGER, cascade = ALL)

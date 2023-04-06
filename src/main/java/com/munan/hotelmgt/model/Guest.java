@@ -1,5 +1,6 @@
 package com.munan.hotelmgt.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,6 +33,7 @@ public class Guest implements Serializable {
     private String firstName;
     
     @Column(name = "deleted")
+    @JsonIgnore
     private boolean deleted = Boolean.FALSE;
     
     @Column(name = "last_name")
