@@ -17,5 +17,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RoomListDto {
     
-    private ArrayList<RoomDto> rooms;
+    private ArrayList<Long> roomIds;
 }

@@ -20,7 +20,7 @@ public class PaymentDto {
     
     private LocalDate date;
     
-    private String invoiceCode;
+    private Long invoiceId;
     
-    private String paymentType;
+    private Long paymentMethodId;
 }

@@ -45,6 +45,20 @@ public class PaymentController {
         return paymentService.getByInvoiceId(id);
     }
     
+    @Operation(summary = "GET BY INVOICE CODE", description = "Retrieve Payment by Invoice code")
+    @GetMapping("/get/code/{invoice_code}")
+    public ResponseEntity<HttpResponse<?>> getPaymentByInvoiceCode(@PathVariable(value = "invoice_code") String code) throws NotFoundException {
+        return paymentService.getByInvoiceCode(code);
+    }
+    
+    @Operation(summary = "RETRIEVE ALL", description = "Retrieve all payments by Pagination")
+    @GetMapping("/get/{field}/{page}/{size}")
+    public ResponseEntity<HttpResponse<?>> getAllPayment(@PathVariable("field") String field,
+                                                      @PathVariable("page") Integer page,
+                                                      @PathVariable("size") Integer size) {
+        return paymentService.getAll(page, size, field);
+    }
+    
     //DELETE
     @Operation(summary = "REMOVE PAYMENT BY ID", description = "Remove payment by id")
     @DeleteMapping("/remove/{payment_id}")

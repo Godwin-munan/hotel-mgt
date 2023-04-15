@@ -7,9 +7,7 @@ package com.munan.hotelmgt.dto;
 import java.time.LocalDate;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
 /**
@@ -31,16 +29,16 @@ public class StaffDto {
     
     private String cardNo;
 
-    private String cardType;
+    private Long cardId;
     
     private LocalDate employDate;
     
     private LocalDate terminateDate;
     
-    private String genderType;
+    private Long genderId;
     
-    private String shiftType;
+    private Long shiftId;
     
-    private String jobTitle;
+    private Long jobId;
     
 }

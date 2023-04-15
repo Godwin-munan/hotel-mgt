@@ -9,8 +9,6 @@ import com.munan.hotelmgt.repository.JobRepository;
 import com.munan.hotelmgt.utils.HttpResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -119,7 +117,7 @@ public class JobService {
         return jobRepository.findByTitle(title).orElseThrow(()-> new NotFoundException("Job with "+title+" not Found"));
     }
     
-    //PRIVATE METHOD TO FIND BY ID
+    //METHOD TO FIND BY ID
     public Job findById(Long id) throws NotFoundException {
 
         return jobRepository.findById(id)

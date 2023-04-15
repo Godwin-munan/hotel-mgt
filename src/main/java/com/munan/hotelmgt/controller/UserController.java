@@ -42,7 +42,7 @@ public class UserController {
     
     @Operation(summary = "ADD ROLE TO USER", description = "Add roles to a user")
     @PostMapping("/add/roles/{user_id}")
-    public ResponseEntity<HttpResponse<?>> addRoomsToGuest(@PathVariable(value = "user_id") Long uId, @RequestBody RoleListDto roleList) throws AlreadyExistException, NotFoundException, Exception {
+    public ResponseEntity<HttpResponse<?>> addRolesToUser(@PathVariable(value = "user_id") Long uId, @RequestBody RoleListDto roleList) throws AlreadyExistException, NotFoundException, Exception {
         return userService.addRoleList(uId, roleList);
     }
     

@@ -11,6 +11,7 @@
 	<groupId>com.munan</groupId>
 	<artifactId>hotel-mgt</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+        <packaging>jar</packaging>
 	<name>hotel-mgt</name>
 	<description>Hotel management system </description>
 	<properties>

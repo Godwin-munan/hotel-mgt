@@ -8,7 +8,6 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 public class JobDto {
-
     private String title;
     private Double salary;
     private String description;

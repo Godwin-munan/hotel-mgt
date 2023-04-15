@@ -53,6 +53,7 @@ public class AppUserService {
     //ADD NEW USER WITH ROLE LIST
     public ResponseEntity<HttpResponse<?>> add(UserDto userDto) throws AlreadyExistException, NotFoundException{
         
+        System.out.println("Roles: "+userDto.getRoleIds());
         AppUser newUser = addUserFromDto(userDto);
         
         return ResponseEntity.ok(
@@ -185,7 +186,7 @@ public class AppUserService {
         newUser.setUsername(user.getUsername());
         newUser.setPassword(passwordEncoder.encode(user.getPassword()));
         
-        return addRoleToUser(newUser,user.getRoles());
+        return addRoleIdToUser(newUser,user.getRoleIds());
     }
     
     //PRIVATE METHOD TO ADD NEW USER FROM USER
@@ -213,16 +214,32 @@ public class AppUserService {
     }
     
     //PRIVATE METHOD TO ADD ROLE LIST TO USER
-    private AppUser addRoleToUser(AppUser user, List<Role> roles) throws NotFoundException{
+    private AppUser addRoleIdToUser(AppUser user, List<Long> roleIds) throws NotFoundException{
             
-        Iterator<Role> role = roles.iterator();
+        Iterator<Long> role = roleIds.iterator();
+        System.out.println("Roles: "+roleIds);
         while(role.hasNext()){
-            Role newRole = roleService.findById(role.next().getId());
+            Role newRole = roleService.findById(role.next());
             
             user.addRole(newRole);
         }
         return user;
     }
+    
+    
+     //PRIVATE METHOD TO ADD ROLE LIST TO USER
+    private AppUser addRoleToUser(AppUser user, List<Role> role) throws NotFoundException{
+            
+        Iterator<Role> newrole = role.iterator();
+        while(newrole.hasNext()){
+            Role newRole = roleService.findById(newrole.next().getId());
+            
+            user.addRole(newRole);
+        }
+        return user;
+    }
+    
+    
     
     //PRIVATE METHOD TO REMOVE ROOM FROM GUEST
     private AppUser removeRoleFromUser(AppUser user){

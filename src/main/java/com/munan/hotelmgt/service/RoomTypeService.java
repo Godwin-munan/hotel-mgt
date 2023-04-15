@@ -124,8 +124,8 @@ public class RoomTypeService {
                 )); 
     }
     
-    //PRIVATE METHOD TO FIND BY ID
-    private RoomType findById(Long id) throws NotFoundException {
+    //METHOD TO FIND BY ID
+    public RoomType findById(Long id) throws NotFoundException {
         return roomTypeRepository.findById(id)
                 .orElseThrow(()->new NotFoundException("Room Type with id "+id+" Does not exist"));
 

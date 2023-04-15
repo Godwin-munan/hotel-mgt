@@ -116,7 +116,7 @@ public class IdCardService {
     }
     
     //PRIVATE METHOD TO FIND BY ID
-    private IdCard findById(Long id) throws NotFoundException {
+    public IdCard findById(Long id) throws NotFoundException {
 
         return cardRepository.findById(id)
                 .orElseThrow(()->new NotFoundException("Card with id "+id+", Does not exist"));

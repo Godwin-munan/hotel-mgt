@@ -115,8 +115,8 @@ public class GenderService {
     }
     
     //FIND GENDER BY TYPE
-    public Gender findGenderByType(String type) throws NotFoundException{
-        return genderRepository.findByType(type).orElseThrow(()-> new NotFoundException("Gender of Type "+type+" not Found"));
+    public Gender findGenderById(Long id) throws NotFoundException{
+        return genderRepository.findById(id).orElseThrow(()-> new NotFoundException("Gender with "+id+" not Found"));
     }
 }
 

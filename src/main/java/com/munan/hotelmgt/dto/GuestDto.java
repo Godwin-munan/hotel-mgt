@@ -6,11 +6,7 @@ package com.munan.hotelmgt.dto;
 
 import java.time.LocalDate;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 /**
  *
@@ -31,5 +27,5 @@ public class GuestDto {
     
     private LocalDate expireDate;
     
-    private String genderType;
+    private Long genderId;
 }

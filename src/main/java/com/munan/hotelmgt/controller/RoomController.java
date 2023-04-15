@@ -43,6 +43,12 @@ public class RoomController {
         return roomService.getAll(page, size, field);
     }
     
+    @Operation(summary = "GET ROOMS BY ROOM TYPE ID", description = "Retrieve Rooms by room type id")
+    @GetMapping("/get/type/{roomtype_id}")
+    public ResponseEntity<HttpResponse<?>> getRoomsByRoomTypeId(@PathVariable("roomtype_id") Long typeId) throws NotFoundException {
+        return roomService.getRoomsByTypeId(typeId);
+    }
+    
     @Operation(summary = "GET BY ID", description = "Retrieve existing Room by id")
     @GetMapping("/get/{room_id}")
     public ResponseEntity<HttpResponse<?>> getRoomById(@PathVariable(value = "room_id") Long id) throws NotFoundException {

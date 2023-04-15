@@ -108,8 +108,8 @@ public class PaymentMethodService {
                 )); 
     }
     
-    //PRIVATE METHOD TO FIND BY ID
-    private PaymentMethod findById(Long id) throws NotFoundException {
+    //METHOD TO FIND BY ID
+    public PaymentMethod findById(Long id) throws NotFoundException {
         return methodRepository.findById(id)
                 .orElseThrow(()->new NotFoundException("Payment Method with id "+id+" Does not exist"));
 

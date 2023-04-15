@@ -26,6 +26,6 @@ public class InvoiceDto {
     
     private Double paymentTotal;
     
-    private String guestCode;
+    private Long guestId;
     
 }

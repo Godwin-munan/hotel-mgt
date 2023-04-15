@@ -135,7 +135,7 @@ public class InvoiceService {
         
         Invoice newInvoice = new Invoice();
         
-        Guest guest = guestService.findGuestByGuestCode(invoice.getGuestCode());
+        Guest guest = guestService.findById(invoice.getGuestId());
         
         Double invoiceTotal = guestRoomSum(guest);
         

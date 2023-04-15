@@ -11,13 +11,13 @@ import com.munan.hotelmgt.repository.PaymentRepository;
 import com.munan.hotelmgt.utils.HttpResponse;
 import jakarta.transaction.Transactional;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 @Service
 @Transactional
-@RequiredArgsConstructor
 public class PaymentService {
 
     private final PaymentRepository paymentRepository;
@@ -25,6 +25,15 @@ public class PaymentService {
     
     private final InvoiceService invoiceService;
     private final PaymentMethodService methodService;
+
+    public PaymentService(PaymentRepository paymentRepository, InvoiceRepository invoiceRepository, InvoiceService invoiceService, PaymentMethodService methodService) {
+        this.paymentRepository = paymentRepository;
+        this.invoiceRepository = invoiceRepository;
+        this.invoiceService = invoiceService;
+        this.methodService = methodService;
+    }
+    
+    
 
     //ADD NEW PAYMENT
     public ResponseEntity<HttpResponse<?>> add(PaymentDto paymentDto) throws NotFoundException {
@@ -43,7 +52,7 @@ public class PaymentService {
     //ADD PAYMENT BY INVOICE ID
     public ResponseEntity<HttpResponse<?>> addByInvoiceId(Long id, PaymentDto paymentDto) throws NotFoundException {
         Invoice invoice = invoiceService.findInvoiceById(id);
-        PaymentMethod method = methodService.findByType(paymentDto.getPaymentType());
+        PaymentMethod method = methodService.findById(paymentDto.getPaymentMethodId());
         
         Payment payment = addPaymentToInvoice(paymentDto.getAmount(), invoice);
         
@@ -60,9 +69,34 @@ public class PaymentService {
         );
     }
     
+    //GET ALL PAYMENT
+    public ResponseEntity<HttpResponse<?>> getAll(Integer page, Integer size, String field) {
+        return ResponseEntity.ok(
+                new HttpResponse<>(HttpStatus.OK.value(),
+                        HttpStatus.OK,
+                        succesResponse,
+                        paymentRepository.findAll(PageRequest.of(page,size, Sort.by(Sort.Direction.DESC, field))))
+        );
+    }
+    
     //GET ALL PAYMENT OF AN INVOICE BY INVOICE ID
     public ResponseEntity<HttpResponse<?>> getByInvoiceId(Long id) throws NotFoundException {
         List<Payment> payments = findPaymentByInvoiceId(id);
+        
+        return ResponseEntity.ok(
+                new HttpResponse<>(
+                        HttpStatus.OK.value(),
+                        HttpStatus.OK,
+                        succesResponse,
+                        payments
+                )
+        );
+    }
+    
+    //GET ALL PAYMENTS OF AN INVOICE BY INVOICE CODE
+    public ResponseEntity<HttpResponse<?>> getByInvoiceCode(String code) throws NotFoundException {
+        
+        List<Payment> payments = findPaymentByInvoiceCode(code);
         
         return ResponseEntity.ok(
                 new HttpResponse<>(
@@ -90,8 +124,8 @@ public class PaymentService {
     //PRIVATE METHOD TO ADD NEW PAYMENT FROM DTO
     private Payment addPaymentFromDto(PaymentDto payment) throws NotFoundException{
         
-        Invoice invoice = invoiceService.findInvoiceByCode(payment.getInvoiceCode());
-        PaymentMethod method = methodService.findByType(payment.getPaymentType());
+        Invoice invoice = invoiceService.findInvoiceById(payment.getInvoiceId());
+        PaymentMethod method = methodService.findById(payment.getPaymentMethodId());
         
         Payment newPayment = addPaymentToInvoice( payment.getAmount(), invoice);
         
@@ -124,6 +158,13 @@ public class PaymentService {
             return new NotFoundException("No Payment available for this invoice");
         });
     }
+    
+    //FIND PAYMENTS BY INVOICE CODE
+    private List<Payment> findPaymentByInvoiceCode(String invoiceCode) throws NotFoundException{
+        Invoice invoice = invoiceService.findInvoiceByCode(invoiceCode);
+        
+        return findPaymentByInvoiceId(invoice.getId());
+    }
 
     //FIND PAYMENT BY ID
     private Payment findPaymentById(Long id) throws NotFoundException{
@@ -144,4 +185,6 @@ public class PaymentService {
         invoiceRepository.save(payment.getInvoice());
         paymentRepository.delete(payment);
     }
+
+
 }

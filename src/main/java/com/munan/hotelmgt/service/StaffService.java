@@ -51,7 +51,7 @@ public class StaffService {
                 new HttpResponse<>(HttpStatus.OK.value(),
                         HttpStatus.OK,
                         succesResponse,
-                        staffRepository.findAll(PageRequest.of(page,size, Sort.by(Sort.Direction.ASC, field))))
+                        staffRepository.findAll(PageRequest.of(page,size, Sort.by(Sort.Direction.DESC, field))))
         );
     }
 
@@ -130,10 +130,10 @@ public class StaffService {
     private Staff addStaffFromDto(StaffDto staff) throws NotFoundException, InvalidEmailException{
     
         Staff newStaff = new Staff();
-        IdCard card = cardService.findCardByType(staff.getCardType());
-        Gender gender = genderService.findGenderByType(staff.getGenderType());
-        Job job = jobService.findJobByTitle(staff.getJobTitle());
-        Shift shift = shiftService.findShiftByType(staff.getShiftType());
+        IdCard card = cardService.findById(staff.getCardId());
+        Gender gender = genderService.findGenderById(staff.getGenderId());
+        Job job = jobService.findById(staff.getJobId());
+        Shift shift = shiftService.findById(staff.getShiftId());
         
         newStaff.setFirstName(staff.getFirstName());
         newStaff.setLastName(staff.getLastName());
@@ -184,6 +184,10 @@ public class StaffService {
         
         if(staff.getTerminateDate() != null){
             newStaff.setTerminateDate(staff.getTerminateDate());
+        }
+        
+        if(staff.getEmployDate() != null){
+            newStaff.setEmployDate(staff.getEmployDate());
         }
         
         if(staff.getCard() != null){

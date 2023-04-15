@@ -23,6 +23,6 @@ public class RoomDto {
     
     private String code;
     
-    private String roomType;
+    private Long roomTypeId;
     
 }

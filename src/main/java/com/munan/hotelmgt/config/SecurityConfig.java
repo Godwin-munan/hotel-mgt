@@ -33,7 +33,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Collections;
 import java.util.List;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpMethod.*;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -67,7 +66,7 @@ public class SecurityConfig {
 //                        .requestMatchers(GET, "/api/job/getById/**", "/api/test/name").permitAll()
 //                        .requestMatchers(DELETE, "/api/job/delete/**").permitAll()
 //                        .requestMatchers(POST, "/api/user/add/**").permitAll()
-                        .anyRequest().authenticated())
+                        .anyRequest().permitAll())
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .sessionManagement(session->session.sessionCreationPolicy(STATELESS))
                 .exceptionHandling(exception->

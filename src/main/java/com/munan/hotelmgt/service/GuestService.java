@@ -187,7 +187,7 @@ public class GuestService {
         String guestCode = randomNum();
         
         Guest newGuest = new Guest();
-        Gender gender = genderService.findGenderByType(guest.getGenderType());
+        Gender gender = genderService.findGenderById(guest.getGenderId());
         
         newGuest.setFirstName(guest.getFirstName());
         newGuest.setLastName(guest.getLastName());
@@ -253,10 +253,10 @@ public class GuestService {
     //PRIVATE METHOD TO ADD ROOM LIST TO GUEST
     private Guest addRoomToGuest(Guest guest, RoomListDto rooms) throws NotFoundException{
           
-        Iterator<RoomDto> room = rooms.getRooms().iterator();
+        Iterator<Long> room = rooms.getRoomIds().iterator();
         
         while(room.hasNext()){
-            Room newRoom = roomService.findRoomByNo(room.next().getCode());
+            Room newRoom = roomService.findById(room.next());
             
             newRoom.setStatus(ROOM_OCCUPIED);
             guest.addRoom(newRoom);

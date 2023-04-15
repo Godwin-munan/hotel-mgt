@@ -11,6 +11,7 @@ import com.munan.hotelmgt.model.RoomType;
 import com.munan.hotelmgt.repository.RoomRepository;
 import com.munan.hotelmgt.utils.HttpResponse;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -60,6 +61,19 @@ public class RoomService {
                         HttpStatus.OK,
                         succesResponse,
                         roomRepository.findAll(PageRequest.of(page,size, Sort.by(Sort.Direction.ASC, field))))
+        );
+    }
+    
+    //GET ROOMS BY ROOM TYPE ID
+    public ResponseEntity<HttpResponse<?>> getRoomsByTypeId(Long typeId) throws NotFoundException {
+        
+        List<Room> rooms = findByRoomTypeId(typeId);
+        
+        return ResponseEntity.ok(
+                new HttpResponse<>(HttpStatus.OK.value(),
+                        HttpStatus.OK,
+                        succesResponse,
+                        rooms)
         );
     }
 
@@ -137,12 +151,19 @@ public class RoomService {
         );
     }
     
-    //PRIVATE METHOD TO FIND BY ID
-    private Room findById(Long id) throws NotFoundException {
+    //METHOD TO FIND BY ID
+    public Room findById(Long id) throws NotFoundException {
 
         return roomRepository.findById(id)
                 .orElseThrow(()->new NotFoundException("Room with id "+id+", Does not exist"));
 
+    }
+    
+    //FIND ROOMS BY ROOM TYPE ID
+    public List<Room> findByRoomTypeId(Long id) throws NotFoundException {
+        
+        roomTypeService.findById(id);
+        return roomRepository.findByRoomType_id(id);
     }
     
     
@@ -151,7 +172,7 @@ public class RoomService {
     
         Room newRoom = new Room();
         
-        RoomType roomType = roomTypeService.findRoomTypeByName(room.getRoomType());
+        RoomType roomType = roomTypeService.findById(room.getRoomTypeId());
         
         newRoom.setCode(room.getCode());
         newRoom.setStatus(ROOM_AVAILABLE);
@@ -179,6 +200,8 @@ public class RoomService {
         
         return roomRepository.save(room);
     }
+
+    
 
     
   

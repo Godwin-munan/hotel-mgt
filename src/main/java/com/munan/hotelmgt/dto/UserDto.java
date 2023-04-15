@@ -32,6 +32,6 @@ public class UserDto {
     
     private String password;
 
-    private ArrayList<Role> roles;
+    private ArrayList<Long> roleIds;
     
 }
