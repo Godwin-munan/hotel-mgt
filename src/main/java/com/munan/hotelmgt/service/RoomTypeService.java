@@ -107,13 +107,27 @@ public class RoomTypeService {
             savedType.setId( type.getId());
         }
         
-        savedType.setName(type.getName());
-        savedType.setDescription(type.getDescription());
-        savedType.setPrice(type.getPrice());
-        savedType.setProperty(type.getProperty());
-        savedType.setImage(
+        if(type.getName() != null){
+           savedType.setName(type.getName());
+        }
+        
+        if(type.getDescription() != null){
+           savedType.setDescription(type.getDescription());
+        }
+        
+        if(type.getPrice() != null){
+           savedType.setPrice(type.getPrice());
+        }
+        
+        if(type.getProperty() != null){
+           savedType.setProperty(type.getProperty());
+        }
+        
+        if(type.getImage() != null){
+           savedType.setImage(
                 CompressionUtil.compress(type.getImage())
-        );
+            );
+        }
         
         return ResponseEntity.ok(
                 new HttpResponse<>(
