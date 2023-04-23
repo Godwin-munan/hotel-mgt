@@ -80,6 +80,16 @@ public class RoomTypeService {
                         findType
                 ));
     }
+    
+    public ResponseEntity<HttpResponse<?>> totalRoomTypeCount() {
+        return ResponseEntity.ok(
+                new HttpResponse<>(
+                        HttpStatus.OK.value(),
+                        HttpStatus.OK,
+                        succesResponse,
+                        roomTypeRepository.findRoomTypeCount())
+        ); 
+    }
 
     //DELETE ROOM TYPE BY ID
     public ResponseEntity<HttpResponse<?>> deleteById(Long id) throws NotFoundException {
@@ -171,5 +181,6 @@ public class RoomTypeService {
     public RoomType findRoomTypeByName(String name) throws NotFoundException{
         return roomTypeRepository.findByName(name).orElseThrow(()-> new NotFoundException(name+" room not Found"));
     }
+
     
 }

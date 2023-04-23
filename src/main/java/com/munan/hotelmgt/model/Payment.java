@@ -30,7 +30,6 @@ public class Payment implements Serializable {
     private LocalDate paymentDate;
     
     @ManyToOne
-    @JsonIgnore
     private Invoice invoice;
     
     @ManyToOne

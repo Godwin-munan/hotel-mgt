@@ -194,10 +194,11 @@ public class InvoiceService {
     //SUM PRICES OF GUEST ROOMS
     private Double guestRoomSum(Guest guest){
         Double sum = 0.0;
+        Integer numDays = guest.getExpireDate().getDayOfYear() - guest.getCheckIn().getDayOfYear();
         
         Iterator<Room> roomIterate = guest.getRooms().iterator();
         while(roomIterate.hasNext()){
-            sum += roomIterate.next().getRoomType().getPrice();
+            sum += (roomIterate.next().getRoomType().getPrice() * numDays);
         }
         
         return sum;

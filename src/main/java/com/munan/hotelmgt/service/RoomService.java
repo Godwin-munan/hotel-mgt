@@ -111,6 +111,33 @@ public class RoomService {
                         roomRepository.findStatusCount(ROOM_OCCUPIED))
         ); 
     }
+    
+    //GET COUNT OF ALL ROOM
+    public ResponseEntity<HttpResponse<?>> totalRoomCount() {
+        return ResponseEntity.ok(
+                new HttpResponse<>(
+                        HttpStatus.OK.value(),
+                        HttpStatus.OK,
+                        succesResponse,
+                        roomRepository.findRoomCount())
+        ); 
+    }
+    
+    //GET AVAILABLE ROOMS BY ROOM TYPE ID
+    public ResponseEntity<HttpResponse<?>> AvailableRoomsByRoomTypeId(Long id) throws NotFoundException {
+        
+        roomTypeService.findById(id);
+        
+        
+        
+        return ResponseEntity.ok(
+                new HttpResponse<>(
+                        HttpStatus.OK.value(),
+                        HttpStatus.OK,
+                        succesResponse,
+                        roomRepository.findAvailableRoomByRoomTypeId(id, ROOM_AVAILABLE))
+        ); 
+    }
 
     //DELETE ROOM BY ID
     public ResponseEntity<HttpResponse<?>> deleteById(Long id) throws NotFoundException {
@@ -140,6 +167,18 @@ public class RoomService {
         
         if(room.getId() != null){
             savedRoom.setId(room.getId());
+        }
+        
+        if(room.getCode() != null){
+            savedRoom.setCode(room.getCode());
+        }
+        
+        if(room.getRoomType() != null){
+            savedRoom.setRoomType(room.getRoomType());
+        }
+        
+        if(room.getStatus() != null){
+            savedRoom.setStatus(room.getStatus());
         }
         
         return ResponseEntity.ok(
@@ -201,8 +240,5 @@ public class RoomService {
         return roomRepository.save(room);
     }
 
-    
-
-    
   
 }

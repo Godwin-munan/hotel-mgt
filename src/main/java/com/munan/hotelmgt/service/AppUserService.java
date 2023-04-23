@@ -209,6 +209,10 @@ public class AppUserService {
         if(user.getPassword() != null){
             newUser.setPassword(passwordEncoder.encode(user.getPassword()));
         }
+        
+        if(user.getRoles() != null){
+            newUser.setRoles(user.getRoles());
+        }
        
         return newUser;
     }

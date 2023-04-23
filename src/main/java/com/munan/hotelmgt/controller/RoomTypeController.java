@@ -44,6 +44,12 @@ public class RoomTypeController {
     public ResponseEntity<HttpResponse<?>> getByRoomTypeId(@PathVariable(value = "roomType_id") Long id) throws NotFoundException {
         return roomTypeService.getById(id);
     }
+    
+    @Operation(summary = "GET TOTAL ROOM TYPE COUNT", description = "Retrieve total room type count")
+    @GetMapping("/get/total")
+    public ResponseEntity<HttpResponse<?>> getTotalRoomTypeCount() throws NotFoundException {
+        return roomTypeService.totalRoomTypeCount();
+    }
 
     //DELETE
     @Operation(summary = "DELETE BY ID", description = "Delete existing Room Type by id")

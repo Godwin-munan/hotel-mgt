@@ -17,9 +17,26 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     )
     Integer  findStatusCount(String name);
     
+    
+    @Query(
+            value ="""
+                   SELECT COUNT(*)
+                   \t FROM room  
+                   \t WHERE `deleted` = FALSE""" ,nativeQuery = true
+    )
+    Integer findRoomCount();
+    
+    @Query(
+            value ="""
+                   SELECT *
+                   \t FROM room  
+                   \t WHERE `roomType_id` =?1 AND `room_status` = ?2 AND `deleted` = FALSE""" ,nativeQuery = true
+    )
+    List<Room> findAvailableRoomByRoomTypeId(Long id, String status);
+    
     Optional<Room> findByCode(String code);
     
     Optional<Room> findByStatus(String status);
     
-    List<Room> findByRoomType_id(Long roomtype_id);
+    List<Room> findByRoomType_id(Long roomtypeId);
 }

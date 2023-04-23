@@ -25,6 +25,8 @@ public class PaymentService {
     
     private final InvoiceService invoiceService;
     private final PaymentMethodService methodService;
+    
+    private String paymentLiteral = "payment with id ";
 
     public PaymentService(PaymentRepository paymentRepository, InvoiceRepository invoiceRepository, InvoiceService invoiceService, PaymentMethodService methodService) {
         this.paymentRepository = paymentRepository;
@@ -108,6 +110,7 @@ public class PaymentService {
         );
     }
     
+    
     //REMOVE PAYMENT BY INVOICE ID
     public ResponseEntity<HttpResponse<?>> removeById(Long id) throws NotFoundException {   
         removePayment(id);
@@ -117,7 +120,20 @@ public class PaymentService {
                         HttpStatus.OK.value(),
                         HttpStatus.OK,
                         succesResponse,
-                        "Payment with id " + id +" has been deleted")
+                        paymentLiteral + id +" has been deleted")
+        );
+    }
+    
+    //UPDATE PAYMENT
+    public ResponseEntity<HttpResponse<?>> update(Payment payment) throws NotFoundException {
+        Payment newPayment = updatePayment(payment);
+        
+        return ResponseEntity.ok(
+                new HttpResponse<>(
+                        HttpStatus.OK.value(),
+                        HttpStatus.OK,
+                        succesResponse,
+                        paymentRepository.save(newPayment))
         );
     }
     
@@ -152,7 +168,7 @@ public class PaymentService {
 
     
 
-     //FIND INVOICE BY GUEST ID
+    //FIND INVOICE BY GUEST ID
     private List<Payment> findPaymentByInvoiceId(Long id) throws NotFoundException{
         return paymentRepository.findByInvoice_id(id).orElseThrow(()-> {
             return new NotFoundException("No Payment available for this invoice");
@@ -184,6 +200,42 @@ public class PaymentService {
         
         invoiceRepository.save(payment.getInvoice());
         paymentRepository.delete(payment);
+    }
+
+    //update payment details on invoice
+    private Payment updatePayment(Payment payment) throws NotFoundException{
+        
+        Double sum = payment.getInvoice().getPaymentTotal();
+        Double newAmount = payment.getAmount();
+        
+        Double amount = findById(payment.getId()).getAmount();
+        
+        Double difference;
+        Invoice invoice = payment.getInvoice();
+        
+        if(newAmount > amount){
+            difference = newAmount - amount;
+            sum += difference;
+            payment.getInvoice().setPaymentTotal(sum);
+            invoice = invoiceRepository.save(payment.getInvoice());
+        }else if (newAmount < amount){
+            difference = amount - newAmount;
+            sum -= difference;
+            payment.getInvoice().setPaymentTotal(sum);
+            invoice = invoiceRepository.save(payment.getInvoice()); 
+        }
+        
+        payment.setInvoice(invoice);
+        payment.setAmount(newAmount);
+    
+        return payment;
+    }
+    
+    //METHOD TO FIND BY ID
+    public Payment findById(Long id) throws NotFoundException {
+        return paymentRepository.findById(id)
+                .orElseThrow(()->new NotFoundException( paymentLiteral + id + ", Does not exist"));
+
     }
 
 

@@ -3,6 +3,7 @@ package com.munan.hotelmgt.controller;
 import com.munan.hotelmgt.dto.PaymentDto;
 import com.munan.hotelmgt.exception.AlreadyExistException;
 import com.munan.hotelmgt.exception.NotFoundException;
+import com.munan.hotelmgt.model.Payment;
 import com.munan.hotelmgt.service.PaymentService;
 import com.munan.hotelmgt.utils.HttpResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -64,5 +66,12 @@ public class PaymentController {
     @DeleteMapping("/remove/{payment_id}")
     public ResponseEntity<HttpResponse<?>> removePaymentByPaymentId(@PathVariable(value = "payment_id") Long id) throws NotFoundException {
         return paymentService.removeById(id);
+    }
+    
+    //UPDATE 
+    @Operation(summary = "UPDATE PAYMENT", description = "Update payment")
+    @PutMapping("/update")
+    public ResponseEntity<HttpResponse<?>> updatePayment(@RequestBody Payment payment) throws NotFoundException{
+        return paymentService.update(payment);
     }
 }

@@ -66,6 +66,18 @@ public class RoomController {
     public ResponseEntity<HttpResponse<?>> getOccupiedRoomCount() throws NotFoundException {
         return roomService.occupiedRoomCount();
     }
+    
+    @Operation(summary = "GET TOTAL ROOM COUNT", description = "Retrieve total room count")
+    @GetMapping("/get/total")
+    public ResponseEntity<HttpResponse<?>> getTotalRoomCount() throws NotFoundException {
+        return roomService.totalRoomCount();
+    }
+    
+    @Operation(summary = "GET AVAILABLE ROOMS BY ROOM TYPE ID", description = "Retrieve available rooms by room type id")
+    @GetMapping("/get/available/{roomtype_id}")
+    public ResponseEntity<HttpResponse<?>> getAvailableRoomByRoomType(@PathVariable(value = "roomtype_id") Long id) throws NotFoundException {
+        return roomService.AvailableRoomsByRoomTypeId(id);
+    }
 
     
     //DELETE
@@ -77,7 +89,7 @@ public class RoomController {
     
     
     //UPDATE
-    @Operation(summary = "UPDATE CARD", description = "Update room record")
+    @Operation(summary = "UPDATE ROOM", description = "Update room record")
     @PutMapping("/update")
     public ResponseEntity<HttpResponse<?>> updateRoom(@RequestBody Room room) throws NotFoundException{
         return roomService.update(room);
