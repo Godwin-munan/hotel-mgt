@@ -3,6 +3,7 @@ package com.munan.hotelmgt.service;
 import static com.munan.hotelmgt.constant.GenConstant.succesResponse;
 import com.munan.hotelmgt.dto.PaymentDto;
 import com.munan.hotelmgt.exception.NotFoundException;
+import com.munan.hotelmgt.model.Guest;
 import com.munan.hotelmgt.model.Invoice;
 import com.munan.hotelmgt.model.Payment;
 import com.munan.hotelmgt.model.PaymentMethod;
@@ -24,15 +25,23 @@ public class PaymentService {
     private final InvoiceRepository invoiceRepository;
     
     private final InvoiceService invoiceService;
+    private final GuestService guestService;
     private final PaymentMethodService methodService;
     
     private String paymentLiteral = "payment with id ";
 
-    public PaymentService(PaymentRepository paymentRepository, InvoiceRepository invoiceRepository, InvoiceService invoiceService, PaymentMethodService methodService) {
+    public PaymentService(
+            PaymentRepository paymentRepository, 
+            InvoiceRepository invoiceRepository, 
+            InvoiceService invoiceService, 
+            PaymentMethodService methodService,
+            GuestService guestService
+    ) {
         this.paymentRepository = paymentRepository;
         this.invoiceRepository = invoiceRepository;
         this.invoiceService = invoiceService;
         this.methodService = methodService;
+        this.guestService = guestService;
     }
     
     
@@ -99,6 +108,40 @@ public class PaymentService {
     public ResponseEntity<HttpResponse<?>> getByInvoiceCode(String code) throws NotFoundException {
         
         List<Payment> payments = findPaymentByInvoiceCode(code);
+        
+        return ResponseEntity.ok(
+                new HttpResponse<>(
+                        HttpStatus.OK.value(),
+                        HttpStatus.OK,
+                        succesResponse,
+                        payments
+                )
+        );
+    }
+    
+    //GET PAYMENT BY GUEST CODE
+    public ResponseEntity<HttpResponse<?>> getByGuestCode(String code) throws NotFoundException {
+        Guest guest = guestService.findGuestByGuestCode(code);
+        Invoice invoice = invoiceService.findInvoiceByGuestId(guest.getId());
+        
+        List<Payment> payments = findPaymentByInvoiceId(invoice.getId());
+        
+        return ResponseEntity.ok(
+                new HttpResponse<>(
+                        HttpStatus.OK.value(),
+                        HttpStatus.OK,
+                        succesResponse,
+                        payments
+                )
+        );
+    }
+
+    //GET PAYMENT BY GUEST EMAIL
+    public ResponseEntity<HttpResponse<?>> getByGuestEmail(String email) throws NotFoundException {
+        Guest guest = guestService.findGuestByEmail(email);
+        Invoice invoice = invoiceService.findInvoiceByGuestId(guest.getId());
+        
+        List<Payment> payments = findPaymentByInvoiceId(invoice.getId());
         
         return ResponseEntity.ok(
                 new HttpResponse<>(
@@ -237,6 +280,8 @@ public class PaymentService {
                 .orElseThrow(()->new NotFoundException( paymentLiteral + id + ", Does not exist"));
 
     }
+
+
 
 
 }

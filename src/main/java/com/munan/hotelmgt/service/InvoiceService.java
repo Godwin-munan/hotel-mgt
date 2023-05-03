@@ -182,7 +182,7 @@ public class InvoiceService {
     }
     
     //FIND INVOICE BY GUEST ID
-    private Invoice findInvoiceByGuestId(Long id) throws NotFoundException{
+    public Invoice findInvoiceByGuestId(Long id) throws NotFoundException{
         return invoiceRepository.findByGuest_Id(id).orElseThrow(()-> new NotFoundException("Invoice for Guest with id "+id+" not found"));
     }
     

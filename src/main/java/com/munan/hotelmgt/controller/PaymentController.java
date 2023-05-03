@@ -53,6 +53,18 @@ public class PaymentController {
         return paymentService.getByInvoiceCode(code);
     }
     
+    @Operation(summary = "GET BY GUEST CODE", description = "Retrieve Payment by Guest code")
+    @GetMapping("/get/guestCode/{guest_code}")
+    public ResponseEntity<HttpResponse<?>> getPaymentByGuestCode(@PathVariable(value = "guest_code") String code) throws NotFoundException {
+        return paymentService.getByGuestCode(code);
+    }
+    
+    @Operation(summary = "GET BY GUEST EMAIL", description = "Retrieve Payment by Guest email")
+    @GetMapping("/get/guestEmail/{guest_email}")
+    public ResponseEntity<HttpResponse<?>> getPaymentByGuestEmail(@PathVariable(value = "guest_email") String email) throws NotFoundException {
+        return paymentService.getByGuestEmail(email);
+    }
+    
     @Operation(summary = "RETRIEVE ALL", description = "Retrieve all payments by Pagination")
     @GetMapping("/get/{field}/{page}/{size}")
     public ResponseEntity<HttpResponse<?>> getAllPayment(@PathVariable("field") String field,
