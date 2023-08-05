@@ -66,7 +66,9 @@ public class SecurityConfig {
 //                        .requestMatchers(GET, "/api/job/getById/**", "/api/test/name").permitAll()
 //                        .requestMatchers(DELETE, "/api/job/delete/**").permitAll()
 //                        .requestMatchers(POST, "/api/user/add/**").permitAll()
-                        .anyRequest().permitAll())
+                        .anyRequest().permitAll()
+//                        .anyRequest().authenticated()
+                )
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .sessionManagement(session->session.sessionCreationPolicy(STATELESS))
                 .exceptionHandling(exception->
@@ -108,7 +110,7 @@ public class SecurityConfig {
         return NimbusJwtDecoder.withPublicKey(rsaKeys.publicKey()).build();
     }
 	
-	@Bean
+    @Bean
     CorsConfigurationSource corsConfigurationSource(){
 
         CorsConfiguration configuration = new CorsConfiguration();

@@ -6,10 +6,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 public class MyUserDetail implements UserDetails {
-    private AppUser user;
+    private final AppUser user;
 
     public MyUserDetail(AppUser user) {
         this.user = user;
