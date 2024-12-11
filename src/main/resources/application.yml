@@ -1,0 +1,44 @@
+
+#spring:
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/hotel-mgt?createDatabaseIfNotExist=true&autoReconnect=true&serverTimezone=Africa/Lagos
+#    username: root
+#    password: ${MYSQL_PASSWORD:1234}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
