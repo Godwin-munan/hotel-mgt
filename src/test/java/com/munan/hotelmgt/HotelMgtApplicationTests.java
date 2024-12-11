@@ -8,14 +8,21 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class HotelMgtApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
 
 	@BeforeEach
 	void init(){}
 
 	@AfterEach
 	void cleanUp(){}
+
+
+	@Test
+	void contextLoads() {
+	}
+
+	@Test
+	void randomTest(){}
+
+
 
 }
