@@ -23,6 +23,8 @@ class HotelMgtApplicationTests {
 	@Test
 	void randomTest(){}
 
+	@Test
+	void newTest(){}
 
 
 }
