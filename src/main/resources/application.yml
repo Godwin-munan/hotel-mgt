@@ -16,6 +16,11 @@ spring:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
 
+  rsa:
+    private-key: classpath:certs/private.pem
+    rsa.public-key: classpath:certs/public.pem
+
+
 
 
 
